@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Standard Java EE / Jakarta EE web deployment descriptor.
+
+    Declares the JDBC DataSource as a resource-ref so the container
+    can inject it via @Resource(lookup = "jdbc/ShoppingCartDS").
+    The actual JNDI binding is done in weblogic.xml.
+-->
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Online Shopping Cart (WebLogic)</display-name>
+
+    <!--
+        DataSource resource reference.
+        The lookup name jdbc/ShoppingCartDS matches the @Resource(lookup="jdbc/ShoppingCartDS")
+        annotations used throughout the service layer.
+    -->
+    <resource-ref>
+        <description>H2 Shopping Cart DataSource</description>
+        <res-ref-name>jdbc/ShoppingCartDS</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+</web-app>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    WebLogic JDBC DataSource descriptor.
+
+    DEPLOYMENT INSTRUCTIONS
+    -----------------------
+    This file defines the H2 in-memory DataSource used by the application.
+    To register it with your WebLogic domain, copy this file to:
+
+        $DOMAIN_HOME/config/jdbc/ShoppingCartDS-jdbc.xml
+
+    Alternatively, use the WebLogic Administration Console:
+      1. Log in at http://localhost:7001/console
+      2. Navigate to Services > Data Sources > New > Generic Data Source
+      3. Configure as described below and target it to your server/cluster.
+
+    Or use WLST:
+        wlst.sh scripts/create-datasource.py
+
+    NOTES
+    -----
+    - The H2 jar is bundled in WEB-INF/lib of the deployed WAR.
+      Point the driver class path to the WAR's WEB-INF/lib/h2-*.jar,
+      OR add h2-*.jar to $DOMAIN_HOME/lib/ (auto-loaded by WebLogic at startup).
+    - For production, replace H2 with an enterprise RDBMS (Oracle, PostgreSQL, etc.).
+-->
+<jdbc-data-source
+    xmlns="http://xmlns.oracle.com/weblogic/jdbc-data-source"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.oracle.com/weblogic/jdbc-data-source
+                        http://xmlns.oracle.com/weblogic/jdbc-data-source/1.4/jdbc-data-source.xsd">
+
+    <name>ShoppingCartDS</name>
+
+    <jdbc-driver-params>
+        <!-- H2 in-memory database – persists for the lifetime of the JVM -->
+        <url>jdbc:h2:mem:shoppingdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</url>
+        <driver-name>org.h2.Driver</driver-name>
+        <properties>
+            <property>
+                <name>user</name>
+                <value>sa</value>
+            </property>
+        </properties>
+        <password-encrypted></password-encrypted>
+    </jdbc-driver-params>
+
+    <jdbc-connection-pool-params>
+        <initial-capacity>1</initial-capacity>
+        <max-capacity>15</max-capacity>
+        <min-capacity>1</min-capacity>
+        <test-connections-on-reserve>true</test-connections-on-reserve>
+        <test-table-name>SQL SELECT 1</test-table-name>
+    </jdbc-connection-pool-params>
+
+    <jdbc-data-source-params>
+        <!-- Must match the jndi-name in weblogic.xml and the @Resource lookup -->
+        <jndi-name>jdbc/ShoppingCartDS</jndi-name>
+        <global-transactions-protocol>None</global-transactions-protocol>
+    </jdbc-data-source-params>
+
+</jdbc-data-source>

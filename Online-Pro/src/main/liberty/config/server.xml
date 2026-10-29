@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="ShoppingCartServer">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>restfulWS-3.1</feature>
+        <feature>jsonb-3.0</feature>
+        <feature>cdi-4.0</feature>
+        <feature>jdbc-4.3</feature>
+        <feature>servlet-6.0</feature>
+    </featureManager>
+
+    <!-- Define the HTTP Endpoint -->
+    <httpEndpoint id="defaultHttpEndpoint"
+                  host="*"
+                  httpPort="5555"
+                  httpsPort="9443" />
+
+    <!-- Configuration for H2 DataSource -->
+    <dataSource id="ShoppingCartDS" jndiName="jdbc/ShoppingCartDS" jdbcDriverRef="H2Driver" transactional="true">
+        <properties.h2 URL="jdbc:h2:mem:shoppingdb;DB_CLOSE_DELAY=-1" user="sa" password="" />
+    </dataSource>
+
+    <jdbcDriver id="H2Driver" libraryRef="H2Lib" />
+
+    <library id="H2Lib">
+        <fileset dir="${server.config.dir}/shared/resources" includes="h2-*.jar" />
+    </library>
+
+    <!-- Automatically expand war files and deploy -->
+    <applicationManager autoExpand="true" />
+
+    <!-- Deploy the shopping cart web application to the root context -->
+    <webApplication id="online-shopping-cart"
+                    location="online-shopping-cart.war"
+                    contextRoot="/" />
+
+</server>

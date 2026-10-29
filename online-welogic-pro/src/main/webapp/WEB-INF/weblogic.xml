@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    WebLogic-specific deployment descriptor.
+
+    Maps the application's resource-ref "jdbc/ShoppingCartDS" to the
+    WebLogic JNDI name of the data source defined in the domain
+    (weblogic-jdbc.xml or via the Administration Console / WLST).
+
+    Expected WebLogic data source JNDI name: jdbc/ShoppingCartDS
+    (configure this in the WebLogic domain before deploying the WAR).
+-->
+<weblogic-web-app
+    xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app
+                        http://xmlns.oracle.com/weblogic/weblogic-web-app/1.9/weblogic-web-app.xsd">
+
+    <!-- Context root of the web application -->
+    <context-root>/</context-root>
+
+    <!--
+        Map the resource-ref declared in web.xml to the JNDI name
+        of the DataSource configured at domain level.
+    -->
+    <resource-description>
+        <res-ref-name>jdbc/ShoppingCartDS</res-ref-name>
+        <jndi-name>jdbc/ShoppingCartDS</jndi-name>
+    </resource-description>
+
+    <!--
+        Prefer the application's own WEB-INF/lib classes over WebLogic
+        system classes to avoid JAR version conflicts (e.g. H2, jbcrypt).
+    -->
+    <container-descriptor>
+        <prefer-web-inf-classes>true</prefer-web-inf-classes>
+    </container-descriptor>
+
+</weblogic-web-app>
